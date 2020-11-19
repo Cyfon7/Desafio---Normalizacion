@@ -30,31 +30,39 @@ CREATE DATABASE biblioteca;
 
 -- Creacion de Entidades
 CREATE TABLE lectores(
-    id SERIAL PRIMARY KEY,
-    apellido VARCHAR(25) NOT NULL,
-    nombre VARCHAR(25) NOT NULL
+    id INT PRIMARY KEY,
+    apellido VARCHAR(25),
+    nombre VARCHAR(25)
 );
 
 CREATE TABLE autores(
-    id SERIAL PRIMARY KEY,
-    apellido VARCHAR(25) NOT NULL,
-    nombre VARCHAR(25) NOT NULL
+    id INT PRIMARY KEY,
+    apellido VARCHAR(25),
+    nombre VARCHAR(25)
 );
 
 CREATE TABLE editoriales(
-    id SERIAL PRIMARY KEY,
-    nombre VARCHAR(50) NOT NULL
+    id INT PRIMARY KEY,
+    nombre VARCHAR(50)
 );
 
 CREATE TABLE libros(
-    codigo_libro INT PRIMARY KEY NOT NULL,
-    titulo VARCHAR(50) NOT NULL,
-    autor_id SERIAL REFERENCES autores(id),
-    editorial_id SERIAL REFERENCES editoriales(id)
+    id INT PRIMARY KEY,
+    codigo_libro INT,
+    titulo VARCHAR(50),
+    editorial_id INT REFERENCES editoriales(id)
 );
 
-CREATE TABLE prestamos(
-    libro_id INT REFERENCES libros(codigo_libro),
-    lector_id SERIAL REFERENCES lectores(id),
-    fecha_devolucion DATE NOT NULL
+-- Relaciones N:N
+CREATE TABLE autor_libro(
+    id INT PRIMARY KEY,
+    libro_id INT REFERENCES libros(id),
+    autor_id INT REFERENCES autores(id)
+);
+
+CREATE TABLE devoluciones(
+    id INT PRIMARY KEY,
+    libro_id INT REFERENCES libros(id),
+    lector_id INT REFERENCES lectores(id),
+    fecha_devolucion DATE
 );
